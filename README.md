@@ -14,19 +14,37 @@ The graphic below provides an overview of the PilotRL pipeline.
 
 <!-- ## Getting started -->
 ## 📦 Installation
-To get started, please install the required packages:
-```bash
+
+Our implementation primarily builds upon [`verl`](https://github.com/volcengine/verl). Noted that we utilize `vllm==0.7.3`. 
+<!-- To get started, please install the required packages: -->
+<!-- ```bash
 pip install -r ./myverl/verl/requirements.txt
-```
+``` -->
+
+Install verl
+
+`cd ./myverl/verl && pip install -e .`
+
+Install my_reward
+
+`cd ./myverl/my_reward && pip install -e .`
 
 ## 🎯 Data Construction
-The scripts for data construction are in `./data_construction/`.
+The scripts for data construction are in `./myverl/data_construction/`.
 ```bash
 python ./data_construction/plan_traj_generation_parallel.py
 ```
+The data preprocessing scripts for RL are located in the `./myverl/data_preprocess` directory. These scripts generate the training data in Parquet format within the `./myverl/data` directory.
+
+## ⚡ Verify Model Serving
+```bash
+export export MY_REWARD_USE_TOOL=1
+cd ./myverl/my_reward/my_reward && python server.py --port 80 --url "your URL" --model "model_name" --key EMPTY --max_tokens 4096 --temperature 0.6 --top_p 0.9
+```
 
 ## 🚀 Training
-The reinforcement learning (RL) framework is built upon `verl` with Group Relative Policy Optimization (GRPO) as the learning algorithm. 
+The reinforcement learning (RL) framework is built upon [`verl`](https://github.com/volcengine/verl) with Group Relative Policy Optimization (GRPO) as the learning algorithm, while omitting the KL penalty and applying clip-higher and overlong penalty. 
+For training, you can review and modify the relevant parameters in the following scripts.
 ```bash
 cd ./myverl/
 bash agent_stage1.sh # Stage 1
@@ -35,7 +53,7 @@ bash agent_stage3.sh # Stage 3
 ```
 Before starting the training, you should first deploy the verification model and enter its URL into:
 ```bash
-export DIAGNOSIS_VERIFY_URL="xxx"
+export DIAGNOSIS_VERIFY_URL="xxx (the verify model's url)"
 ```
 
 <!-- ## Case Study
@@ -43,6 +61,10 @@ export DIAGNOSIS_VERIFY_URL="xxx"
 ![Illustration of AgentRL_case_BabyAI_PilotRL.](figures/AgentRL_case_BabyAI_PilotRL.svg)
 
 ![Illustration of AgentRL_case_BabyAI_ReAct.](figures/AgentRL_case_BabyAI_ReAct.svg) -->
+
+## 🤝 Acknowledge
+
+This implementation is mainly based on [*verl*](https://github.com/volcengine/verl). The model serving is based on [*SGLang*](https://docs.sglang.ai/). We sincerely appreciate their contributions to the open-source community.
 
 ## 📜 Citation
 
