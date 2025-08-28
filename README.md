@@ -38,7 +38,7 @@ The data preprocessing scripts for RL are located in the `./myverl/data_preproce
 
 ## ⚡ Verify Model Serving
 ```bash
-export export MY_REWARD_USE_TOOL=1
+export MY_REWARD_USE_TOOL=1
 cd ./myverl/my_reward/my_reward && python server.py --port 80 --url "your URL" --model "model_name" --key EMPTY --max_tokens 4096 --temperature 0.6 --top_p 0.9
 ```
 
